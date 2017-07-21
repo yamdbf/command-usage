@@ -1,0 +1,50 @@
+{
+  "name": "yamdbf-command-usage",
+  "version": "0.1.0",
+  "description": "YAMDBF plugin for logging command usage and command usage statistics",
+  "main": "bin/index.js",
+  "typings": "bin/index.d.ts",
+  "scripts": {
+    "postinstall": "postinstall-build --only-as-dependency bin \"npm run build -s\"",
+    "build": "gulp",
+    "lint": "tslint './src/**/*.ts'",
+    "package": "gulp clean-package && gulp package"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zajrik/yamdbf-command-usage.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "yamdbf",
+    "node"
+  ],
+  "author": "Zackary Campbell <zajrik@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zajrik/yamdbf-command-usage/issues"
+  },
+  "homepage": "https://github.com/zajrik/yamdbf-command-usage#readme",
+  "dependencies": {
+    "postinstall-build": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^6.0.84",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-tslint": "^8.1.1",
+    "gulp-typescript": "^3.2.1",
+    "run-sequence": "^2.0.0",
+    "tslint": "^5.4.3",
+    "typescript": "^2.4.2",
+    "yamdbf": "github:zajrik/yamdbf"
+  },
+  "buildDependencies": [
+    "typescript",
+    "del",
+    "gulp",
+    "gulp-typescript",
+    "@types/node"
+  ]
+}

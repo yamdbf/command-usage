@@ -1,0 +1,4 @@
+{
+    "defaultGuildSettings": "{\"lang\":\"en_us\",\"prefix\":\"/\",\"disabledGroups\":[],\"limitedCommands\":{},\"blacklist\":{}}",
+    "plugin": "{\"commandUsage\":{\"usage\":{\"usagestats\":18,\"ping\":3,\"reload\":1,\"eval\":1,\"listgroups\":1,\"enablegroup\":1,\"disablegroup\":1,\"blacklist\":1,\"whitelist\":1}}}"
+}
