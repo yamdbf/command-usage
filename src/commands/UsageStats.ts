@@ -9,7 +9,6 @@ export default class extends Command
 	{
 		super({
 			name: 'usagestats',
-			aliases: ['u'], // temporary
 			desc: 'Display command usage stats',
 			usage: '<prefix>usagestats',
 			ownerOnly: true,
