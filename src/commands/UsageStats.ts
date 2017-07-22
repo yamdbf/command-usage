@@ -41,17 +41,18 @@ export default class extends Command
 			topFiveAllTime = topFiveAllTime.slice(0, 5);
 		}
 
+		const xl: (str: string) => string = str => `\`\`\`xl\n${str}\n\`\`\``;
 		const embed: RichEmbed = new RichEmbed()
 			.setAuthor(this.client.user.username, this.client.user.avatarURL)
-			.addField('Per minute (session)', `\`\`\`xl\n${perMin.toFixed(2)}\n\`\`\``, true)
-			.addField('Total (session)', `\`\`\`xl\n${this.plugin.totalSessionUsed}\n\`\`\``, true)
-			.addField('Total (last hour)', `\`\`\`xl\n${this.plugin.sessionUsages
-				.filter(u => (Date.now() - u[1]) < (1e3 * 60 * 60)).length}\n\`\`\``, true)
+			.addField('Per minute (session)', xl(perMin.toFixed(2)), true)
+			.addField('Total (session)', xl(this.plugin.totalSessionUsed.toString()), true)
+			.addField('Total (last hour)', xl(this.plugin.sessionUsages
+				.filter(u => (Date.now() - u[1]) < (1e3 * 60 * 60)).length.toString()), true)
 			.addField(all === 'all' ? 'All time usages' : 'Top five (All time)',
-				`\`\`\`xl\n${topFiveAllTime.map(a => `${a[0]}:\n${a[1]}`).join('\n')}\n\`\`\``, true)
+				xl(topFiveAllTime.map(a => `${a[0]}:\n${a[1]}`).join('\n')), true)
 			.addField(all === 'all' ? 'Session usages' : 'Top five (session)',
-				`\`\`\`xl\n${topFiveSession.map(a => `${a[0]}:\n${a[1]}`).join('\n')}\n\`\`\``, true)
-			.addField('Total (all time)', `\`\`\`xl\n${this.plugin.totalUsed}\n\`\`\``, true)
+				xl(topFiveSession.map(a => `${a[0]}:\n${a[1]}`).join('\n')), true)
+			.addField('Total (all time)', xl(this.plugin.totalUsed.toString()), true)
 			.setFooter('Command usage')
 			.setTimestamp();
 
