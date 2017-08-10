@@ -38,7 +38,7 @@
     "run-sequence": "^2.1.0",
     "tslint": "^5.6.0",
     "typescript": "^2.4.2",
-    "yamdbf": "github:zajrik/yamdbf"
+    "yamdbf": "^3.0.1"
   },
   "buildDependencies": [
     "typescript",
