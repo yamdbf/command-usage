@@ -1,5 +1,5 @@
-import { Message, Guild, User, TextChannel, DMChannel, Collection, RichEmbed } from 'discord.js';
-import { Client, Plugin, IPlugin, PluginConstructor, ListenerUtil, KeyedStorage, Util, ClientStorage } from 'yamdbf';
+import { Message, TextChannel, RichEmbed } from 'discord.js';
+import { Client, Plugin, IPlugin, PluginConstructor, ListenerUtil, ClientStorage } from 'yamdbf';
 import { commandUsageFactory } from './commandUsageFactory';
 import { StorageKeys } from './StorageKeys';
 import UsageStats from './commands/UsageStats';
