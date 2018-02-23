@@ -4,14 +4,12 @@ that gives the ability to have commands logged to a specified channel and to vie
 command usage statistics via a `usagestats` command.
 
 # Usage
->Note: Until YAMDBF 3.0.0 is officially released, I'm not going to be pushing updates
-for this on NPM. In the meantime, you can install directly from github with
-`npm install --save zajrik/yamdbf-command-usage`
-
 Install the package via `npm`:
 ```
 npm install --save yamdbf-command-usage
 ```
+
+>Note: This plugin depends on YAMDBF >3.0.0, so obviously make sure `yamdbf` is installed
 
 There are two ways to use the plugin after installing. The first is a simple automatic
 import by passing `'command-usage'` to your YAMDBF Client options `plugins` array field:
@@ -23,6 +21,7 @@ const client = new Client({
 	plugins: ['command-usage']
 });
 ```
+>Using the plugin this way does not allow for command logging to Discord
 
 The second is via a manual import, which will give access to command logging via a specified
 guild text channel. You must import `commandUsage` from the plugin and pass it to your

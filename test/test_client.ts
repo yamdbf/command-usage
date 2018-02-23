@@ -11,7 +11,7 @@ class Test extends Client
 			token: config.token,
 			owner: config.owner,
 			readyText: 'Test client ready',
-			plugins: [commandUsage(config.logChannel)]
+			plugins: [commandUsage(config.commandLog)]
 		});
 	}
 }

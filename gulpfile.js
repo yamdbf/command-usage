@@ -12,38 +12,20 @@ let _gulp_tslint;
 let _tslint;
 let _runSequence;
 
-function runSequence()
-{
-	if (typeof _runSequence === 'undefined') _runSequence = require('run-sequence');
-	return _runSequence;
-}
-
-function gulp_tslint()
-{
-	if (typeof _gulp_tslint === 'undefined') _gulp_tslint = require('gulp-tslint');
-	return _gulp_tslint;
-}
-
-function tslint()
-{
-	if (typeof _tslint === 'undefined') _tslint = require('tslint');
-	return _tslint;
-}
-
-function linter()
-{
-	if (typeof _linter === 'undefined') _linter = tslint().Linter.createProgram('tsconfig.json');
-	return _linter;
-}
+const runSequence = () => _runSequence = _runSequence || require('run-sequence');
+const gulp_tslint = () => _gulp_tslint = _gulp_tslint || require('gulp-tslint');
+const tslint = () => _tslint = _tslint || require('tslint');
+const linter = () => _linter = _linter || tslint().Linter.createProgram('tsconfig.json');
 
 gulp.task('default', ['build']);
 gulp.task('build:vscode', cb => runSequence()('lint', 'build', cb));
 
 gulp.task('pause', cb => setTimeout(() => cb(), 1e3));
 gulp.task('tests', cb => runSequence()('lint', 'build', 'pause', 'build:tests', cb));
+gulp.task('pkg', cb => runSequence()('build', 'pause', 'pause', 'package', cb));
 
 gulp.task('lint', () => {
-	gulp.src('./src/**/*.ts')
+	gulp.src('src/**/*.ts')
 		.pipe(gulp_tslint()({
 			configuration: 'tslint.json',
 			formatter: 'prose',
@@ -53,32 +35,39 @@ gulp.task('lint', () => {
 })
 
 gulp.task('build', () => {
-	del.sync(['./bin/**/*.*']);
-	const tsCompile = gulp.src('./src/**/*.ts')
-		.pipe(gulp_sourcemaps.init())
+	del.sync(['bin/**/*.*']);
+	const tsCompile = gulp.src('src/**/*.ts')
+		.pipe(gulp_sourcemaps.init({ base: 'src' }))
 		.pipe(project());
 
 	tsCompile.pipe(gulp.dest('bin/'));
 
-	gulp.src('./src/**/*.js')
-		.pipe(gulp.dest('bin/'));
-
-	gulp.src('./src/**/*.json')
-		.pipe(gulp.dest('bin/'));
-
-	gulp.src('./src/**/*.lang')
-		.pipe(gulp.dest('bin/'));
+	gulp.src('src/**/*.js').pipe(gulp.dest('bin/'));
+	gulp.src('src/**/*.json').pipe(gulp.dest('bin/'));
+	gulp.src('src/**/*.lang').pipe(gulp.dest('bin/'));
 
 	return tsCompile.js
-		.pipe(gulp_sourcemaps.write({
-			sourceRoot: file => path.relative(path.join(file.cwd, file.path), file.base)
-		}))
+		.pipe(gulp_sourcemaps.write('.', { sourceRoot: '../src' }))
 		.pipe(gulp.dest('bin/'));
 });
 
+gulp.task('package', () => {
+	del.sync(['../pkg/yamdbf-command-usage/**/*.*'], { force: true });
+	gulp.src('bin/**/*.*').pipe(gulp.dest('../pkg/yamdbf-command-usage/bin'));
+	gulp.src('package.json').pipe(gulp.dest('../pkg/yamdbf-command-usage'));
+	gulp.src('README.md').pipe(gulp.dest('../pkg/yamdbf-command-usage'));
+});
+
 gulp.task('build:tests', () => {
-	del.sync(['./test/**/*.js']);
-	gulp.src('./test/**/*.ts')
-		.pipe(project())		
-		.pipe(gulp.dest('./test/'));
+	del.sync(['test/**/*.js']);
+	const tsCompile = gulp.src('test/**/*.ts')
+		.pipe(gulp_sourcemaps.init({ base: 'test' }))
+		.pipe(project());
+
+	tsCompile.pipe(gulp.dest('test/'));
+
+	return tsCompile.js
+		.pipe(gulp_sourcemaps.mapSources(sourcePath => path.join(__dirname, 'test', sourcePath)))
+		.pipe(gulp_sourcemaps.write())
+		.pipe(gulp.dest('test/'));
 });
