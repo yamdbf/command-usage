@@ -6,7 +6,11 @@ command usage statistics via a `usagestats` command.
 # Usage
 Install the package via `npm`:
 ```
-npm install --save yamdbf-command-usage
+npm install --save @yamdbf/command-usage
+```
+or to install the indev version:
+```
+npm install --save yamdbf/command-usage#indev
 ```
 
 >Note: This plugin depends on YAMDBF >3.0.0, so obviously make sure `yamdbf` is installed
@@ -14,7 +18,7 @@ npm install --save yamdbf-command-usage
 There are two ways to use the plugin after installing. The first is a simple automatic
 import by passing `'command-usage'` to your YAMDBF Client options `plugins` array field:
 ```js
-const { Client } = require('yamdbf');
+const { Client } = require('@yamdbf/core');
 
 const client = new Client({
 	...
@@ -24,12 +28,12 @@ const client = new Client({
 >Using the plugin this way does not allow for command logging to Discord
 
 The second is via a manual import, which will give access to command logging via a specified
-guild text channel. You must import `commandUsage` from the plugin and pass it to your
+guild text channel. You must import `commandUsage` from the package and pass it to your
 YAMDBF Client options `plugins` array field with the channel ID of the channel you want
 commands to be logged to:
 ```js
-const { Client } = require('yamdbf');
-const { commandUsage } = require('yamdbf-command-usage');
+const { Client } = require('@yamdbf/core');
+const { commandUsage } = require('@yamdbf/command-usage');
 
 const client = new Client({
 	...
