@@ -1,0 +1,1 @@
+{"version":3,"sources":["StorageKeys.ts"],"names":[],"mappings":";;AAAA;;GAEG;AACH,IAAY,WAGX;AAHD,WAAY,WAAW;IAEtB,8BAAe,CAAA;AAChB,CAAC,EAHW,WAAW,GAAX,mBAAW,KAAX,mBAAW,QAGtB","file":"StorageKeys.js","sourcesContent":["/**\n * Storage key string constants\n */\nexport enum StorageKeys\n{\n\tUSAGE = 'usage'\n}\n"],"sourceRoot":"../src"}
