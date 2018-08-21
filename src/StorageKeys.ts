@@ -3,5 +3,5 @@
  */
 export enum StorageKeys
 {
-	USAGE = 'plugin.commandUsage.usage'
+	USAGE = 'usage'
 }

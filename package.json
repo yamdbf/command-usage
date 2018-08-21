@@ -1,5 +1,5 @@
 {
-  "name": "yamdbf-command-usage",
+  "name": "@yamdbf/command-usage",
   "version": "1.0.0",
   "description": "YAMDBF plugin for logging command usage and command usage statistics",
   "main": "bin/index.js",
@@ -27,6 +27,7 @@
   "homepage": "https://github.com/zajrik/yamdbf-command-usage#readme",
   "devDependencies": {
     "@types/node": "^6.0.85",
+    "@yamdbf/core": "yamdbf/core#indev",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^2.6.4",
@@ -34,7 +35,6 @@
     "gulp-typescript": "^3.2.1",
     "run-sequence": "^2.2.1",
     "tslint": "^5.6.0",
-    "typescript": "^2.4.2",
-    "yamdbf": "^3.0.1"
+    "typescript": "^3.0.1"
   }
 }

@@ -1,4 +1,4 @@
-import { Client, Logger } from 'yamdbf';
+import { Client, Logger } from '@yamdbf/core';
 import { commandUsage } from '../bin/';
 const config: any = require('./config.json');
 const logger: Logger = Logger.instance();

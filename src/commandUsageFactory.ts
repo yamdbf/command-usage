@@ -1,4 +1,4 @@
-import { Client, PluginConstructor } from 'yamdbf';
+import { Client, PluginConstructor } from '@yamdbf/core';
 import { CommandUsage } from './CommandUsage';
 
 export function commandUsageFactory(channel: string): PluginConstructor

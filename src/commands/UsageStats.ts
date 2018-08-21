@@ -1,5 +1,5 @@
-import { RichEmbed } from 'discord.js';
-import { Command, Message } from 'yamdbf';
+import { MessageEmbed } from 'discord.js';
+import { Command, Message } from '@yamdbf/core';
 import { CommandUsage } from '../CommandUsage';
 
 export default class extends Command
@@ -42,8 +42,8 @@ export default class extends Command
 		}
 
 		const xl: (str: string) => string = str => `\`\`\`xl\n${str}\n\`\`\``;
-		const embed: RichEmbed = new RichEmbed()
-			.setAuthor(this.client.user.username, this.client.user.avatarURL)
+		const embed: MessageEmbed = new MessageEmbed()
+			.setAuthor(this.client.user.username, this.client.user.avatarURL())
 			.addField('Per minute (session)', xl(perMin.toFixed(2)), true)
 			.addField('Total (session)', xl(this.plugin.totalSessionUsed.toString()), true)
 			.addField('Total (last hour)', xl(this.plugin.sessionUsages

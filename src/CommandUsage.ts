@@ -1,8 +1,10 @@
-import { Message, TextChannel, RichEmbed } from 'discord.js';
-import { Client, Plugin, IPlugin, PluginConstructor, ListenerUtil, ClientStorage } from 'yamdbf';
+import { Client, Plugin, IPlugin, PluginConstructor, ListenerUtil, Lang, SharedProviderStorage } from '@yamdbf/core';
+import { Message, TextChannel, MessageEmbed } from 'discord.js';
 import { commandUsageFactory } from './commandUsageFactory';
 import { StorageKeys } from './StorageKeys';
 import UsageStats from './commands/UsageStats';
+import * as path from 'path';
+
 const { on, registerListeners } = ListenerUtil;
 
 export class CommandUsage extends Plugin implements IPlugin
@@ -12,41 +14,45 @@ export class CommandUsage extends Plugin implements IPlugin
 	public static readonly CommandUsage: PluginConstructor = CommandUsage;
 
 	public readonly name: string = 'CommandUsage';
+
 	public commandsUsed: { [command: string]: number };
 	public sessionUsages: [string, number][] = [];
 	public sessionUsed: { [command: string]: number } = {};
 
-	private readonly client: Client;
-	private readonly storage: ClientStorage;
-	private readonly _channel: string;
-	private channel: TextChannel;
+	private readonly _client: Client;
+	private readonly _channelID: string;
+	private _storage: SharedProviderStorage;
+	private _channel: TextChannel;
 
 	public constructor(client: Client, channel: string = '')
 	{
 		super();
-		this.client = client;
-		this.storage = client.storage;
-		this._channel = channel;
+		this._client = client;
+		this._channelID = channel;
 	}
 
-	public async init(): Promise<void>
+	public async init(storage: SharedProviderStorage): Promise<void>
 	{
-		if (this._channel)
+		this._storage = storage;
+
+		if (this._channelID)
 		{
-			this.channel = <TextChannel> this.client.channels.get(this._channel);
-			if (!this.channel) throw new Error(`CommandUsage: Failed to find channel with ID '${this._channel}'`);
+			this._channel = <TextChannel> this._client.channels.get(this._channelID);
+			if (!this._channel) throw new Error(`CommandUsage: Failed to find channel with ID '${this._channelID}'`);
 		}
 
-		this.commandsUsed = await this.storage.get(StorageKeys.USAGE) || {};
+		this.commandsUsed = await this._storage.get(StorageKeys.USAGE) || {};
 
-		this.client.commands.registerExternal(new UsageStats(this));
-		registerListeners(this.client, this);
+		this._client.commands.registerExternal(new UsageStats(this));
+		registerListeners(this._client, this);
+
+		Lang.loadGroupLocalizationsFrom(path.resolve(__dirname, './locale'));
 	}
 
 	@on('command')
 	private async _onCommand(name: string, args: any[], exec: number, message: Message): Promise<void>
 	{
-		if (this.channel) this.logCommand(name, args, exec, message);
+		if (this._channel) this.logCommand(name, args, exec, message);
 		if (name !== 'usagestats') this._incrementCommand(name);
 	}
 
@@ -62,7 +68,7 @@ export class CommandUsage extends Plugin implements IPlugin
 		this.commandsUsed[name] = (this.commandsUsed[name] || 0) + 1;
 		this.sessionUsed[name] = (this.sessionUsed[name] || 0) + 1;
 
-		this.storage.set(StorageKeys.USAGE, this.commandsUsed);
+		this._storage.set(StorageKeys.USAGE, this.commandsUsed);
 	}
 
 	/**
@@ -86,16 +92,16 @@ export class CommandUsage extends Plugin implements IPlugin
 	 */
 	private async logCommand(name: string, args: any[], exec: number, message: Message): Promise<void>
 	{
-		const logChannel: TextChannel = <TextChannel> this.channel;
-		const embed: RichEmbed = new RichEmbed()
+		const logChannel: TextChannel = <TextChannel> this._channel;
+		const embed: MessageEmbed = new MessageEmbed()
 			.setColor(11854048)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.avatarURL);
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.avatarURL());
 
 		if (message.guild) embed.addField('Guild', message.guild.name, true);
 
 		embed.addField('Exec time', `${exec.toFixed(2)}ms`, true)
 			.addField('Command content', message.content)
-			.setFooter(message.channel.type.toUpperCase(), this.client.user.avatarURL)
+			.setFooter(message.channel.type.toUpperCase(), this._client.user.avatarURL())
 			.setTimestamp();
 
 		logChannel.send({ embed });
