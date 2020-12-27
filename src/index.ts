@@ -1,5 +1,5 @@
-import { PluginConstructor } from '@yamdbf/core';
 import { CommandUsage } from './CommandUsage';
+import { PluginConstructor } from '@yamdbf/core';
 
 const commandUsage: (channel: string) => PluginConstructor = CommandUsage.commandUsage;
 export { commandUsage };

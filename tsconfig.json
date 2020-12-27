@@ -9,7 +9,9 @@
         ],
         "declaration": true,
         "sourceMap": true,
-		"removeComments": false
+		"removeComments": false,
+		"skipLibCheck": true,
+		"stripInternal": true
     },
 	"exclude": [
 		"node_modules",
