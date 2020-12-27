@@ -10,7 +10,7 @@ npm install --save @yamdbf/command-usage
 ```
 or to install the indev version:
 ```
-npm install --save yamdbf/command-usage#indev
+npm install --save @yamdbf/command-usage@indev
 ```
 
 >Note: This plugin depends on YAMDBF >3.0.0, so obviously make sure `yamdbf` is installed
